@@ -16,6 +16,13 @@
 # define F_CPU 16000000  // CPU frequency in Hz required for UART_BAUD_SELECT
 #endif
 
+#define u8 uint8_t
+
+//INSTRUCTIONS & COEFFICIENTS
+typedef struct {
+    u8 reg_off;
+    u8 reg_val;
+} reg_value;
 
 /* Includes ----------------------------------------------------------*/
 #include <avr/io.h>         // AVR device-specific IO definitions
@@ -26,6 +33,7 @@
 #include <twi.h>            // I2C/TWI library for AVR-GCC
 #include <gpio.h>       // GPIO library for AVR-GCC
 #include <util/delay.h> // Functions for busy-wait delay loops
+#include "equalizer_registers.h"
 
 #define SENSOR_ADR 0x18
 
@@ -59,15 +67,15 @@ int main(void)
     _delay_ms(1);
     GPIO_write_high(&PORTB, 0);
 
-    uart_puts("Print one line... ");
-    uart_puts("done\r\n");
+    uart_puts("Starting...\r\n");
+    uart_puts("Is AIC3254 connected?");
 
     twi_init();
 
     if (twi_test_address(SENSOR_ADR) == 0)
-        uart_puts("yes\r\n");
+        uart_puts("yes, device is ready\r\n");
     else {
-        uart_puts("nooooooooooooooooooooooooo\r\n");        
+        uart_puts("no, device not found\r\n");        
     }
 
     twi_start();
@@ -80,27 +88,14 @@ int main(void)
     uint8_t ret = twi_read(TWI_ACK);
     uint8_t ret2 = twi_read(TWI_NACK);
     twi_stop();
-/*
-    _delay_ms(1);
 
-    twi_start();
-    twi_write((SENSOR_ADR<<1) | TWI_WRITE);
-    twi_write(0x05);
-    twi_stop();
-    // Read data from internal memory
-    twi_start();
-    twi_write((SENSOR_ADR<<1) | TWI_READ);
-    uint8_t ret2 = twi_read(TWI_NACK);
-    
-    twi_stop();
-*/
     char string[8];  // String for converted numbers by itoa()
     itoa(ret,string,10);
-    uart_puts("fuck:");
+    uart_puts("test of reg:");
     uart_puts(string);
     uart_puts("\r\n");
     itoa(ret2,string,10);
-    uart_puts("fuck2:");
+    uart_puts("another test:");
     uart_puts(string);
     uart_puts("\r\n");
     
@@ -115,6 +110,10 @@ int main(void)
 
     // Will never reach this
     return 0;
+
+equ_write_full(REG_Section_program, 80);
+equ_write_full(miniDSP_A_reg_values, miniDSP_A_reg_values_COEFF_SIZE+miniDSP_A_reg_values_INST_SIZE); 
+equ_write_full(miniDSP_D_reg_values, miniDSP_D_reg_values_COEFF_SIZE+miniDSP_D_reg_values_INST_SIZE);    
 }
 
 /* Interrupt service routines ----------------------------------------*/
@@ -142,5 +141,20 @@ ISR(TIMER1_OVF_vect)
         itoa(value,string,16);
         uart_puts(string);
         uart_puts("\r\n");
+    }
+}
+
+void equ_write_full(reg_value* reg_values, size_t size)
+{
+    for (size_t i = 0; i < size; i++)
+    {
+        reg_values += i;
+
+        twi_start();
+        twi_write((SENSOR_ADR<<1) | TWI_WRITE);
+        
+        twi_write(reg_values->reg_off);
+        twi_write(reg_values->reg_val);
+        twi_stop();
     }
 }

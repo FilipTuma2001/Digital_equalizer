@@ -16,8 +16,10 @@ static string MUX_control_names[] = {
 static control VOLUME_controls[] = {
 };
 
+
 static string VOLUME_control_names[] = {
 };
+
 
 //INSTRUCTIONS & COEFFICIENTS
 typedef struct {
@@ -30,7 +32,9 @@ static string REG_Section_names[] = {
     "miniDSP_D_reg_values",
 };
 
-reg_value REG_Section_program[] = {
+
+
+const reg_value PROGMEM REG_Section_program[] = {
     {  0,0x00},
 //			# reg[  0][  1] = 0x01	; Initialize the device through software reset
     {  1,0x01},
@@ -178,7 +182,7 @@ reg_value REG_Section_program[] = {
     {100,0x00},
 };
 
-reg_value miniDSP_A_reg_values[] = {
+const reg_value PROGMEM miniDSP_A_reg_values[] = {
     {  0,0x08},
     {  8,0x00},
     {  9,0xB7},
@@ -1607,7 +1611,7 @@ reg_value miniDSP_A_reg_values[] = {
 #define miniDSP_A_reg_values_INST_START    590
 #define miniDSP_A_reg_values_INST_SIZE     831
 
-reg_value miniDSP_D_reg_values[] = {
+const reg_value PROGMEM miniDSP_D_reg_values[] = {
     {  0,0x2C},
     {  8,0xFF},
     {  9,0xFF},

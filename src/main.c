@@ -95,6 +95,7 @@ int main(void)
         uart_puts("no, device not found\r\n");
     }
 
+    /*
     twi_start();
     twi_write((SENSOR_ADR << 1) | TWI_WRITE);
     twi_write(0x05);
@@ -115,7 +116,7 @@ int main(void)
     uart_puts("another test:");
     uart_puts(str);
     uart_puts("\r\n");
-
+    */
     equ_write_full(REG_Section_program, sizeof(REG_Section_program) / sizeof(REG_Section_program[0]));
     equ_write_full(miniDSP_A_reg_values, miniDSP_A_reg_values_COEFF_SIZE + miniDSP_A_reg_values_INST_SIZE);
     equ_write_full(miniDSP_D_reg_values, miniDSP_D_reg_values_COEFF_SIZE + miniDSP_D_reg_values_INST_SIZE);

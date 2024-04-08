@@ -27,9 +27,9 @@
 #include <twi.h>           // I2C/TWI library for AVR-GCC
 #include <gpio.h>          // GPIO library for AVR-GCC
 #include <util/delay.h>    // Functions for busy-wait delay loops
-#include "equalizer_registers.h"
+//#include "equalizer_registers.h"
 //#include "pp_1kz.h"
-//#include "transport.h"
+#include "transport.h"
 #include <avr/pgmspace.h>
 
 #define SENSOR_ADR 0x18

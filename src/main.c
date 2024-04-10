@@ -85,16 +85,16 @@ int main(void)
     _delay_ms(1);
     GPIO_write_high(&PORTB, 0);
 
-    uart_puts("Starting...\r\n");
-    uart_puts("Is AIC3254 connected?");
+    uart_puts("Starting... ");
+    uart_puts("Is AIC3254 connected?\r\n");
 
     twi_init();
 
     if (twi_test_address(SENSOR_ADR) == 0)
-        uart_puts("yes, device is ready\r\n");
+        uart_puts("Yes, device is ready\r\n");
     else
     {
-        uart_puts("no, device not found\r\n");
+        uart_puts("No, device not found\r\n");
     }
 
     /*
@@ -123,6 +123,7 @@ int main(void)
     equ_write_full(miniDSP_A_reg_values, miniDSP_A_reg_values_COEFF_SIZE + miniDSP_A_reg_values_INST_SIZE);
     equ_write_full(miniDSP_D_reg_values, miniDSP_D_reg_values_COEFF_SIZE + miniDSP_D_reg_values_INST_SIZE);
 
+    uart_puts("Upload of registers is done!\r\n");
     // Infinite loop
     while (1)
     {

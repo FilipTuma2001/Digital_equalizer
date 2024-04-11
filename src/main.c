@@ -52,7 +52,7 @@ void equ_write_full(reg_value const *reg_values, size_t size)
                 
         twi_write(pgm_read_byte_near(&reg_values->reg_off));
         twi_write(pgm_read_byte_near(&reg_values->reg_val));
-
+        
         twi_stop();
         reg_values++;
     }

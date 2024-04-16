@@ -29,8 +29,9 @@
 #include <util/delay.h>    // Functions for busy-wait delay loops
 //#include "equalizer_registers.h"
 //#include "pp_1kz.h"
-#include "transport.h"
+//#include "transport.h"
 #include <avr/pgmspace.h>
+#include "agc.h"
 
 #define SENSOR_ADR 0x18
 
@@ -97,6 +98,28 @@ int main(void)
         uart_puts("No, device not found\r\n");
     }
 
+    twi_start();
+    twi_write((SENSOR_ADR << 1) | TWI_WRITE);
+    twi_write(0x00);
+    twi_write(0x01);
+    twi_stop();
+
+    twi_start();
+    twi_write((SENSOR_ADR << 1) | TWI_WRITE);
+    twi_write(0x12);
+    
+    twi_stop();
+    // Read data from internal memory
+    twi_start();
+    twi_write((SENSOR_ADR << 1) | TWI_READ);
+    uint8_t ret2 = twi_read(TWI_ACK);
+    twi_stop();
+
+    char str2[8]; // str for converted numbers by itoa()
+    itoa(ret2, str2, 10);
+    uart_puts("First reg :");
+    uart_puts(str2);
+    uart_puts("\r\n");
     /*
     twi_start();
     twi_write((SENSOR_ADR << 1) | TWI_WRITE);
@@ -119,12 +142,38 @@ int main(void)
     uart_puts(str);
     uart_puts("\r\n");
     */
+
     equ_write_full(REG_Section_program, sizeof(REG_Section_program) / sizeof(REG_Section_program[0]));
     equ_write_full(miniDSP_A_reg_values, miniDSP_A_reg_values_COEFF_SIZE + miniDSP_A_reg_values_INST_SIZE);
     equ_write_full(miniDSP_D_reg_values, miniDSP_D_reg_values_COEFF_SIZE + miniDSP_D_reg_values_INST_SIZE);
 
     uart_puts("Upload of registers is done!\r\n");
     // Infinite loop
+
+    twi_start();
+    twi_write((SENSOR_ADR << 1) | TWI_WRITE);
+    twi_write(0x00);
+    twi_write(0x01);
+    twi_stop();
+
+    twi_start();
+    twi_write((SENSOR_ADR << 1) | TWI_WRITE);
+    twi_write(0x12);
+    
+    twi_stop();
+    // Read data from internal memory
+    twi_start();
+    twi_write((SENSOR_ADR << 1) | TWI_READ);
+    uint8_t ret = twi_read(TWI_ACK);
+    twi_stop();
+
+    char str[8]; // str for converted numbers by itoa()
+    itoa(ret, str, 10);
+    uart_puts("Page reg (161?):");
+    uart_puts(str);
+    uart_puts("\r\n");
+ 
+    
     while (1)
     {
         /* Empty loop. All subsequent operations are performed exclusively

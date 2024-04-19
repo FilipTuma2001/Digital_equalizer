@@ -29,9 +29,9 @@
 #include <util/delay.h>    // Functions for busy-wait delay loops
 //#include "equalizer_registers.h"
 //#include "pp_1kz.h"
-//#include "transport.h"
+#include "transport.h"
 #include <avr/pgmspace.h>
-#include "agc.h"
+//#include "agc.h"
 
 #define SENSOR_ADR 0x18
 

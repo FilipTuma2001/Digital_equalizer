@@ -29,9 +29,9 @@
 #include <util/delay.h>    // Functions for busy-wait delay loops
 //#include "equalizer_registers.h"
 //#include "pp_1kz.h"
-//#include "transport.h"
+#include "transport.h"
 #include <avr/pgmspace.h>
-#include "agc.h"
+//#include "agc.h"
 
 #define SENSOR_ADR 0x18
 
@@ -98,6 +98,7 @@ int main(void)
         uart_puts("No, device not found\r\n");
     }
 
+    /*
     twi_start();
     twi_write((SENSOR_ADR << 1) | TWI_WRITE);
     twi_write(0x00);
@@ -117,9 +118,10 @@ int main(void)
 
     char str2[8]; // str for converted numbers by itoa()
     itoa(ret2, str2, 10);
-    uart_puts("First reg :");
+    uart_puts("Line output (start) muted? :");
     uart_puts(str2);
     uart_puts("\r\n");
+    */
     /*
     twi_start();
     twi_write((SENSOR_ADR << 1) | TWI_WRITE);
@@ -150,6 +152,7 @@ int main(void)
     uart_puts("Upload of registers is done!\r\n");
     // Infinite loop
 
+    /*
     twi_start();
     twi_write((SENSOR_ADR << 1) | TWI_WRITE);
     twi_write(0x00);
@@ -169,10 +172,10 @@ int main(void)
 
     char str[8]; // str for converted numbers by itoa()
     itoa(ret, str, 10);
-    uart_puts("Page reg (161?):");
+    uart_puts("Line output (end) muted?:");
     uart_puts(str);
     uart_puts("\r\n");
- 
+    */
     
     while (1)
     {

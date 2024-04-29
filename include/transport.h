@@ -121,10 +121,10 @@ const reg_value PROGMEM REG_Section_program[] = {
     { 12,0x08},
 //			# reg[  1][ 13] = 0x08	; Route RDAC to HPR
     { 13,0x08},
-//			# reg[  1][ 14] = 0x08	; Route LDAC to LOL
-    { 14,0x08},
-//			# reg[  1][ 15] = 0x08	; Route LDAC to LOR
-    { 15,0x08},
+//			# reg[  1][ 14] = 0x08	; Route LDAC to LOL --CHANGED (could be 0x0A?)
+    { 14,0x02},
+//			# reg[  1][ 15] = 0x08	; Route LDAC to LOR --CHANGED (could be 0x0A?)
+    { 15,0x02},
     {  0,0x00},
 //			# reg[  0][ 63] = 0xd4	; Power up LDAC/RDAC w/ soft stepping
     { 63,0xD4},
@@ -137,8 +137,11 @@ const reg_value PROGMEM REG_Section_program[] = {
     { 18,0x00},
 //			# reg[  1][ 19] = 0x00	; Unmute LOR driver, 0dB Gain
     { 19,0x00},
-//			# reg[  1][  9] = 0x3c	; Power up HPL/HPR and LOL/LOR drivers
-    {  9,0x3C},
+//			# reg[  1][  9] = 0x3c	; Power up HPL/HPR and LOL/LOR drivers and also MAR/MAL --CHANGED
+    {  9,0x3F},
+//          # UNMUTE L&R Mixed Amplifiers [1][24]/[1][25] --CHANGED
+    { 24,0x00},
+    { 25,0x00},
     {  0,0x00},
 //			# reg[  0][ 64] = 0x00	; Unmute LDAC/RDAC
     { 64,0x00},

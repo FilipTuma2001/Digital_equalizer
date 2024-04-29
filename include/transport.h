@@ -137,11 +137,11 @@ const reg_value PROGMEM REG_Section_program[] = {
     { 18,0x00},
 //			# reg[  1][ 19] = 0x00	; Unmute LOR driver, 0dB Gain
     { 19,0x00},
-//			# reg[  1][  9] = 0x3c	; Power up HPL/HPR and LOL/LOR drivers and also MAR/MAL --CHANGED
-    {  9,0x3F},
-//          # UNMUTE L&R Mixed Amplifiers [1][24]/[1][25] --CHANGED
+//          # UNMUTE L&R Mixed Amplifiers [  1][ 24]/[  1][ 25] --CHANGED
     { 24,0x00},
     { 25,0x00},
+//			# reg[  1][  9] = 0x3c	; Power up HPL/HPR and LOL/LOR drivers and also MAR/MAL --CHANGED
+    {  9,0x3F},
     {  0,0x00},
 //			# reg[  0][ 64] = 0x00	; Unmute LDAC/RDAC
     { 64,0x00},

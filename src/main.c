@@ -1,20 +1,15 @@
-/* 
+/* ------------------------------------------------------------------ 
 Bachelor´s work - 7 Band Digital Equalizer
 Filip Tuma (2024)
-*/
+--------------------------------------------------------------------- */
 
 /* Defines -----------------------------------------------------------*/
 #ifndef F_CPU
 #define F_CPU 16000000 // CPU frequency in Hz required for UART_BAUD_SELECT
 #endif
 
-#define u8 uint8_t
-#define string uint8_t *
-
 /* Includes ----------------------------------------------------------*/
 #include <avr/io.h>        // AVR device-specific IO definitions
-#include <avr/interrupt.h> // Interrupts standard C library for AVR-GCC
-#include "timer.h"         // Timer library for AVR-GCC
 #include <uart.h>          // Peter Fleury's UART library
 #include <stdlib.h>        // C library. Needed for number conversions
 #include <twi.h>           // I2C/TWI library for AVR-GCC
@@ -22,13 +17,11 @@ Filip Tuma (2024)
 #include <util/delay.h>    // Functions for busy-wait delay loops
 #include <avr/pgmspace.h>
 
-// Sampling Rate 44.1 kHz
-//#include "equalizer_registers.h"
-//#include "pp_1kz.h"
-//#include "transport.h"
-//#include "agc.h"
+// Variables fix
+#define u8 uint8_t
+#define string uint8_t *
 
-// Sampling Rate 48 kHz
+// Register matrices, sampling Rate 48 kHz
 //#include "equalizer_pop.h"
 //#include "equalizer_rap.h"
 //#include "equalizer_rock.h"
@@ -41,7 +34,7 @@ Filip Tuma (2024)
 void equ_write_full(reg_value const *reg_values, size_t size)
 {
     /*
-    // Reading of register (testing) 
+    // TESTING
     reg_values++;
     char str[8]; // str for converted numbers by itoa()
     itoa(pgm_read_byte_near(&reg_values->reg_off), str, 10);
@@ -55,9 +48,9 @@ void equ_write_full(reg_value const *reg_values, size_t size)
         twi_start();
         twi_write((SENSOR_ADR<<1) | TWI_WRITE);
 
-        // Write into defined register        
+        // Write into this register        
         twi_write(pgm_read_byte_near(&reg_values->reg_off));
-        // Write into register defined value
+        // Write this value
         twi_write(pgm_read_byte_near(&reg_values->reg_val));
         
         twi_stop();
@@ -67,12 +60,10 @@ void equ_write_full(reg_value const *reg_values, size_t size)
 
 int main(void)
 {
-
-    // Initialize USART to asynchronous
+    // UART initialization
     uart_init(UART_BAUD_SELECT(9600, F_CPU));
-
-    // Enables interrupts by setting the global interrupt mask
-    sei();
+    // I2C initialization
+    twi_init();
 
     // Set low pin D8 on Arduino UNO (RESET of TLV320AIC3254)
     GPIO_mode_output(&DDRB, 0);
@@ -83,9 +74,6 @@ int main(void)
     // Control of connection 
     uart_puts("Starting... ");
     uart_puts("Is AIC3254 connected?\r\n");
-
-    twi_init();
-
     if (twi_test_address(SENSOR_ADR) == 0)
         uart_puts("Yes, device is ready\r\n");
     else
@@ -93,6 +81,7 @@ int main(void)
         uart_puts("No, device not found\r\n");
     }
 /*
+    // TESTING
     twi_start();
     twi_write((SENSOR_ADR << 1) | TWI_WRITE);
     twi_write(0x00);
@@ -146,6 +135,7 @@ int main(void)
     uart_puts("Upload of registers is done!\r\n");
     
 /*
+    // TESTING
     twi_start();
     twi_write((SENSOR_ADR << 1) | TWI_WRITE);
     twi_write(0x00);

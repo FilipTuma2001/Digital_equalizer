@@ -15,7 +15,8 @@ Filip Tuma (2024)
 #include <twi.h>           // I2C/TWI library for AVR-GCC
 #include <gpio.h>          // GPIO library for AVR-GCC
 #include <util/delay.h>    // Functions for busy-wait delay loops
-#include <avr/pgmspace.h>
+#include <avr/pgmspace.h>  // Arduino UNO data allocation 
+#include <avr/interrupt.h> // Interrupts standard C library for AVR-GCC
 
 // Variables fix
 #define u8 uint8_t
@@ -64,6 +65,8 @@ int main(void)
     uart_init(UART_BAUD_SELECT(9600, F_CPU));
     // I2C initialization
     twi_init();
+
+    sei();
 
     // Set low pin D8 on Arduino UNO (RESET of TLV320AIC3254)
     GPIO_mode_output(&DDRB, 0);
@@ -128,10 +131,11 @@ int main(void)
 */
 
     // Send registers into TLV320AIC3254
+    /*
     equ_write_full(REG_Section_program, sizeof(REG_Section_program) / sizeof(REG_Section_program[0]));
     equ_write_full(miniDSP_A_reg_values, miniDSP_A_reg_values_COEFF_SIZE + miniDSP_A_reg_values_INST_SIZE);
     equ_write_full(miniDSP_D_reg_values, miniDSP_D_reg_values_COEFF_SIZE + miniDSP_D_reg_values_INST_SIZE);
-
+    */
     uart_puts("Upload of registers is done!\r\n");
     
 /*

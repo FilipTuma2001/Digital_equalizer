@@ -131,11 +131,10 @@ int main(void)
 */
 
     // Send registers into TLV320AIC3254
-    /*
+    
     equ_write_full(REG_Section_program, sizeof(REG_Section_program) / sizeof(REG_Section_program[0]));
     equ_write_full(miniDSP_A_reg_values, miniDSP_A_reg_values_COEFF_SIZE + miniDSP_A_reg_values_INST_SIZE);
     equ_write_full(miniDSP_D_reg_values, miniDSP_D_reg_values_COEFF_SIZE + miniDSP_D_reg_values_INST_SIZE);
-    */
     uart_puts("Upload of registers is done!\r\n");
     
 /*

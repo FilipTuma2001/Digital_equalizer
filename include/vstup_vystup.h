@@ -39,7 +39,7 @@ const reg_value PROGMEM REG_Section_program[] = {
 //			# reg[  1][  1] = 0x08	; Power up AVDD LDO; Disable weak AVDD to DVDD connection; Enable Master Analog Power Control, AVDD LDO Powered; Disable weak AVDD to DVDD connection
     {  1,0x08},
 //			# reg[  1][  2] = 0x00	; Enable Master Analog Power Control
-    {  2,0x00},
+    {  2,0xA1}, //changed -> enable AVdd LDO
 //			# reg[  1][ 71] = 0x32	; Set the input power-up time to 3.1ms
     { 71,0x32},
 //			# reg[  1][123] = 0x01	; Set REF charging time to 40ms (automatic)
@@ -47,8 +47,8 @@ const reg_value PROGMEM REG_Section_program[] = {
     {255,0x00},
     {255,0x01},
     {  0,0x00},
-//			# reg[  0][ 60] = 0x00    ; DAC prog Mode: miniDSP_A and miniDSP_D NOT powered up together, miniDSP_A used for signal processing
-    { 60,0x00},
+//			# reg[  0][ 60] = 0x00    ; DAC prog Mode: miniDSP_A and miniDSP_D NOT powered up together, miniDSP_D used for signal processing
+    { 60,0xC0}, //Changed from 0x00
 //			# reg[  0][ 61] = 0x00	; Use miniDSP_A for signal processing
     { 61,0x00},
 //			# reg[  0][ 17] = 0x08	; 8x Interpolation
@@ -56,11 +56,11 @@ const reg_value PROGMEM REG_Section_program[] = {
 //			# reg[  0][ 23] = 0x04	; 4x Decimation
     { 23,0x04},
 //			
-    { 15,0x03},
+    { 15,0x03}, //[15]+[16]should be multiple of [17] (904/8=113)
 //			
     { 16,0x88},
 //			
-    { 21,0x03},
+    { 21,0x03}, //DSP_A [21]+[22]=904/8, yes
 //			
     { 22,0x88},
     {  0,0x08},
@@ -96,15 +96,15 @@ const reg_value PROGMEM REG_Section_program[] = {
     { 11,0x82},
     {  0,0x01},
 //			# reg[  1][ 51] = 0x40	; Mic Bias enabled, Source = Avdd, 1.25V
-    { 51,0x40},
-//			# reg[  1][ 52] = 0x40	; Route IN2L to LEFT_P with 10K input impedance; Route CM1L to LEFT_M with 10K input impedance; Route IN2R to RIGHT_P with 10K input impedance; Route IN1L to LEFT_P with 10K input impedance
-    { 52,0x40},
+    { 51,0x00}, //changed I dont need MicBias
+//			# reg[  1][ 52] = 0x40	Route IN1L to LPGA with 10K input impedance
+    { 52,0x40}, //changed comment
 //			# reg[  1][ 54] = 0x40	; Route CM1L to LEFT_M with 10K input impedance
-    { 54,0x40},
-//			# reg[  1][ 55] = 0x40	; Route IN1R to RIGHT_P with 10K input impedance
-    { 55,0x40},
+    { 54,0x00}, //changed -> nothing routed into negative LPGA
+//			# reg[  1][ 55] = 0x40	; Route IN1R to RPGA with 10K input impedance
+    { 55,0x40}, 
 //			# reg[  1][ 57] = 0x40	; Route CM1R to RIGHT_M with 10K input impedance
-    { 57,0x40},
+    { 57,0x00}, //changed -> nothing routed into negative RPGA
 //			# reg[  1][ 59] = 0x00	; Enable MicPGA_L Gain Control, 0dB
     { 59,0x00},
 //			# reg[  1][ 60] = 0x00	; Enable MicPGA_R Gain Control, 0dB
@@ -119,8 +119,10 @@ const reg_value PROGMEM REG_Section_program[] = {
     { 20,0x25},
 //			# reg[  1][ 12] = 0x08	; Route LDAC to HPL
     { 12,0x08},
+    //{ 12,0x04},
 //			# reg[  1][ 13] = 0x08	; Route RDAC to HPR
     { 13,0x08},
+    //{ 13,0x04},
 //			# reg[  1][ 14] = 0x08	; Route LDAC to LOL
     { 14,0x08},
 //			# reg[  1][ 15] = 0x08	; Route LDAC to LOR

@@ -40,8 +40,10 @@ const reg_value PROGMEM REG_Section_program[] = {
     {  1,0x08},
 //			# reg[  1][  2] = 0x00	; Enable Master Analog Power Control
     {  2,0xA1}, //changed -> enable AVdd LDO
-//			# reg[  1][ 71] = 0x32	; Set the input power-up time to 3.1ms
-    { 71,0x32},
+//          # reg[  1][ 10] changed by me CM config (by app. ref. guide)
+    {  10,0x3B}, // 0b0011_1011
+//			# reg[  1][ 71] = 0x32	; Set the input power-up time to 6.4ms
+    { 71,0x32}, //changed commnets 3.1 to 6.4 ms
 //			# reg[  1][123] = 0x01	; Set REF charging time to 40ms (automatic)
     {123,0x01},
     {255,0x00},
@@ -100,15 +102,15 @@ const reg_value PROGMEM REG_Section_program[] = {
 //			# reg[  1][ 52] = 0x40	Route IN1L to LPGA with 10K input impedance
     { 52,0x40}, //changed comment
 //			# reg[  1][ 54] = 0x40	; Route CM1L to LEFT_M with 10K input impedance
-    { 54,0x00}, //changed -> nothing routed into negative LPGA
+    { 54,0x40}, // by app. ref. guide negative input should be CM 
 //			# reg[  1][ 55] = 0x40	; Route IN1R to RPGA with 10K input impedance
     { 55,0x40}, 
 //			# reg[  1][ 57] = 0x40	; Route CM1R to RIGHT_M with 10K input impedance
-    { 57,0x00}, //changed -> nothing routed into negative RPGA
+    { 57,0x40}, // by app. ref. guide negative input should be CM
 //			# reg[  1][ 59] = 0x00	; Enable MicPGA_L Gain Control, 0dB
-    { 59,0x00},
+    { 59,0x00}, // in app. ref. guide 0x0c
 //			# reg[  1][ 60] = 0x00	; Enable MicPGA_R Gain Control, 0dB
-    { 60,0x00},
+    { 60,0x00}, // in app. ref. guide 0x0c
     {  0,0x00},
 //			# reg[  0][ 81] = 0xc0	; Power up LADC/RADC
     { 81,0xC0},
@@ -128,8 +130,12 @@ const reg_value PROGMEM REG_Section_program[] = {
 //			# reg[  1][ 15] = 0x08	; Route LDAC to LOR
     { 15,0x08},
     {  0,0x00},
+//          # reg[  0][ 65] = 0x00 LDAC -> 0 dB
+    {  65,0x00}, //changed -> in app. ref. guide 0x00
+//          # reg[  0][ 66] = 0x00 RDAC -> 0 dB
+    {  66,0x00}, //changed -> in app. ref. guide 0x00
 //			# reg[  0][ 63] = 0xd4	; Power up LDAC/RDAC w/ soft stepping
-    { 63,0xD4},
+    { 63,0xD6}, //changed -> in app. ref. guide 0xd6
     {  0,0x01},
 //			# reg[  1][ 16] = 0x00	; Unmute HPL driver, 0dB Gain
     { 16,0x00},

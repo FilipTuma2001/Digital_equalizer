@@ -42,8 +42,13 @@ const reg_value PROGMEM REG_Section_program[] = {
     {  2,0xA1}, //changed -> enable AVdd LDO
 //          # reg[  1][ 10] changed by me CM config (by app. ref. guide)
     {  10,0x3B}, // 0b0011_1011
-//			# reg[  1][ 71] = 0x32	; Set the input power-up time to 6.4ms
-    { 71,0x32}, //changed commnets 3.1 to 6.4 ms
+//          # reg[  1][ 61] = 0x00
+    { 61,0x00}, //changed PTM_R4 ADC config.
+//          # reg[  1][ 3] & [  1][ 4]
+    { 3,0x00}, //changed DAC PTM_R3 and PTM_R4 config.
+    { 4,0x00},
+//			# reg[  1][ 71] = 0x32	; Set the input power-up time to 3.1ms
+    { 71,0x31}, //changed commnets 3.1 to 6.4 ms
 //			# reg[  1][123] = 0x01	; Set REF charging time to 40ms (automatic)
     {123,0x01},
     {255,0x00},
@@ -108,9 +113,9 @@ const reg_value PROGMEM REG_Section_program[] = {
 //			# reg[  1][ 57] = 0x40	; Route CM1R to RIGHT_M with 10K input impedance
     { 57,0x40}, // by app. ref. guide negative input should be CM
 //			# reg[  1][ 59] = 0x00	; Enable MicPGA_L Gain Control, 0dB
-    { 59,0x00}, // in app. ref. guide 0x0c
+    { 59,0x00}, // in app. ref. guide 0x0c (G = 6 dB)
 //			# reg[  1][ 60] = 0x00	; Enable MicPGA_R Gain Control, 0dB
-    { 60,0x00}, // in app. ref. guide 0x0c
+    { 60,0x00}, // in app. ref. guide 0x0c (G = 6 dB)
     {  0,0x00},
 //			# reg[  0][ 81] = 0xc0	; Power up LADC/RADC
     { 81,0xC0},
@@ -120,8 +125,9 @@ const reg_value PROGMEM REG_Section_program[] = {
 //			# reg[  1][ 20] = 0x25	; De-pop: 5 time constants, 6k resistance
     { 20,0x25},
 //			# reg[  1][ 12] = 0x08	; Route LDAC to HPL
-    { 12,0x08},
-    //{ 12,0x04},
+    { 12,0x08}, //LDAC to HPL
+    //{ 12,0x04}, //IN1L to HPL
+    //{ 12,0x02}, //MAL to HPL
 //			# reg[  1][ 13] = 0x08	; Route RDAC to HPR
     { 13,0x08},
     //{ 13,0x04},
@@ -135,7 +141,7 @@ const reg_value PROGMEM REG_Section_program[] = {
 //          # reg[  0][ 66] = 0x00 RDAC -> 0 dB
     {  66,0x00}, //changed -> in app. ref. guide 0x00
 //			# reg[  0][ 63] = 0xd4	; Power up LDAC/RDAC w/ soft stepping
-    { 63,0xD6}, //changed -> in app. ref. guide 0xd6
+    { 63,0xD6}, //changed -> in app. ref. guide 0xd6 0b1101_0110
     {  0,0x01},
 //			# reg[  1][ 16] = 0x00	; Unmute HPL driver, 0dB Gain
     { 16,0x00},
@@ -145,8 +151,10 @@ const reg_value PROGMEM REG_Section_program[] = {
     { 18,0x00},
 //			# reg[  1][ 19] = 0x00	; Unmute LOR driver, 0dB Gain
     { 19,0x00},
+//          # reg[  1][ 24] gain of MAL is 0 dB
+    { 24,0x00},
 //			# reg[  1][  9] = 0x3c	; Power up HPL/HPR and LOL/LOR drivers
-    {  9,0x3C},
+    {  9,0x3E}, //0x3E power up MAL
     {  0,0x00},
 //			# reg[  0][ 64] = 0x00	; Unmute LDAC/RDAC
     { 64,0x00},
